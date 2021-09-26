@@ -3,16 +3,21 @@ import MainPageLayout from '../components/MainPageLayout';
 import { apiGet } from '../misc/config';
 import ShowGrid from '../components/shows/ShowGrid';
 import ActorGrid from '../components/actors/ActorGrid';
+import { RadioInputsWrapper, SearchButtonWrapper, SearchInput } from './Home.styled';
+import CustomRadio from '../components/CustomRadio';
 
 const Home = () => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState(null);
   const [show, setShow] = useState('shows');
 
+  // console.assert(555>200,'This is fare');
+
   const isShowSearch = show === 'shows';
   console.log(isShowSearch);
 
   const onInputChange = ev => {
+    console.log(ev);
     setInput(ev.target.value);
   };
 
@@ -28,13 +33,13 @@ const Home = () => {
     console.log(ev.target.value);
   };
 
-  /*
-  const enterButton = (ev)=>{
-    if (ev.keyCode === 13){
+  const enterButton = ev => {
+    console.log(ev.keyCode);
+    // console.log(ev.which);
+    if (ev.keyCode === 13) {
       onSearchButton();
     }
-  }
-  */
+  };
 
   const RenderResults = () => {
     if (results && results.length === 0) {
@@ -59,39 +64,39 @@ const Home = () => {
   return (
     <div>
       <MainPageLayout>
-        <h1>This is a home page</h1>
 
-        <input
+        <SearchInput
           type="text"
           placeholder="Search for Something"
           onChange={onInputChange}
           value={input}
+          onKeyDown={enterButton}
         />
-        <div>
-          <label htmlFor="forshows">
-            Shows
-            <input
-              type="radio"
-              id="forshows"
-              value="shows"
-              checked={isShowSearch}
-              onChange={isShowSet}
+        <RadioInputsWrapper>
+          <div>
+            <CustomRadio
+            label="Shows"
+            id="forshows"
+            value="shows"
+            checked={isShowSearch}
+            onChange={isShowSet}
             />
-          </label>
-          <label htmlFor="foractors">
-            People
-            <input
-              type="radio"
+          </div>
+          <div>
+            <CustomRadio
+              label="Actors"
               id="foractors"
               value="people"
               checked={!isShowSearch}
               onChange={isShowSet}
             />
-          </label>
-        </div>
+          </div>
+        </RadioInputsWrapper>
+        <SearchButtonWrapper>
         <button type="button" onClick={onSearchButton}>
           Search
         </button>
+        </SearchButtonWrapper>
         {RenderResults()}
       </MainPageLayout>
     </div>
